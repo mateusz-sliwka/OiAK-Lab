@@ -31,7 +31,7 @@ slowo_sterujace: .short 0x103F #binarnie to 00010000 00111111
 _start:
 			
 mov najblizsze, %eax #do eax wpisujemy tryb zaokraglania, w tym przypadku w dol
-mov podwojna, %ebx #do ebx wpisujemy rodzaj precyzji na jakim operujmy
+mov pojedyncze, %ebx #do ebx wpisujemy rodzaj precyzji na jakim operujmy
 mov slowo_sterujace, %ecx #wpisanie slowa sterujacego do ecx
 add %eax, %ebx #dodanie do siebei rejestrow eax i ebx (zaokraglenie i precyzja), wynik w ebx
 add %ebx, %ecx #dodanie do siebie rejestrow ebx i ecx (wyniku tego wyzej i slowa sterujacego), wynik w ecx
@@ -39,8 +39,8 @@ mov %ecx, slowo_sterujace #zapisanie ecx (nowego slowa sterujacego) jako slowo s
 fldcw slowo_sterujace #zaladowanie slowa sterujacego FPU
 
 #WYBOR LICZB NA JAKICH DZIALAMY LUB TYLKO SYMULACJI WYJATKOW
-#jmp zaladuj_float #PROGRAM REALIZUJE DZIALANIA DLA POJEDYNCZEJ PRECYZJI
-jmp zaladuj_double #PROGRAM REALIZUJE DZIALANIA DLA PODWOJNEJ PRECYZJI
+jmp zaladuj_float #PROGRAM REALIZUJE DZIALANIA DLA POJEDYNCZEJ PRECYZJI
+#jmp zaladuj_double #PROGRAM REALIZUJE DZIALANIA DLA PODWOJNEJ PRECYZJI
 #jmp wyjatki #PROGRAM REALIZUJE SYMULACJE WYJATKOW
 
 #WYBOR DZIALANIA DO ZREALZIOWANIA

@@ -34,29 +34,29 @@ push %eax #odlozenie wyniku na stos
 pushf #odlozenie flag na stos
 dec %edi #dekrementacja licznika liczby1
 dec %esi #dekrementacja licznika liczby2
-cmp $0,%esi #porownanie licznika potencjalnie krotszej liczby (liczba2) do zera po to zeby nie wyjsc za jej zakres
-jl dodawaj_do_liczba1 #jezeli jest 0 to porownujemy licznik potencjalnie dluzszej liczby (liczba1)
-cmp $0,%edi #porownuje go do zera
-jl dodawaj_do_liczba2  #jak jest zerem to przechodze do sprawdzenia nadmairu
-jmp dodawaj #jak nie to znaczy ze liczba jest faktycznie dluzsza bo ta krotsza juz sie skonczyla i przechodze do dodawania do dluzszej zer (z uwzg przeniesienia)
+cmp $0,%esi #porownanie licznika liczba2 zeby nie wyjsc poza jej zakres
+jl dodawaj_do_liczba1 #jezeli jest 0 to znaczy ze liczba2 sie skonczyla i do liczba1 bedziemt dodawac 0
+cmp $0,%edi #jesli nie to sprawdzam czy liczba1 sie nie skonczyla
+jl dodawaj_do_liczba2  #jak tak to do licba2 bede dodawal zera
+jmp dodawaj #jak nie to znaczy ze dodaje fragmenty obu liczb dalej
 
-dodawaj_do_liczba1: #funkcja zajmujaca sie dodawaniem zer, to juz sie dzieje po dodaniu krotszej do dluzszej liczby i tylko jezeli liczby sa roznej dlugosci
-cmp $0,%edi
-jl sprawdz_nadmiar
+dodawaj_do_liczba1:
+cmp $0,%edi #sprawdzam czy czasem obie licby sie nie skonczyly
+jl sprawdz_nadmiar #jak tak to przechodze do finalnego sprawdzenia nadmiaru
 movl liczba1(,%edi, 4), %eax #wpisanie do rejestru eax wycietej liczby z liczba1 o dlugosci 4 o okrelsonym indeksie
 popf #sciagam ze stosu flagi
-adcl $0,%eax #dodaje z przeniesieniem zero do eax, dzieki temu uwzgledniam ew przeniesienie wygenerowane we wczesniejszym dodawaniu przesunietej krotszej do dluzszej
+adcl $0,%eax #dodaje zero do eax z uwzglednieniem przeniesienia
 push %eax #wkladam wynik dodawania na stos
 dec %edi #zmniejszam licznik petli
 pushf #odkladam na stos flagi
 jmp dodawaj_do_liczba1 #jezeli nie to kontynuujemy dodawanie zera do liczby dluzszej
 
-dodawaj_do_liczba2: #funkcja zajmujaca sie dodawaniem zer, to juz sie dzieje po dodaniu krotszej do dluzszej liczby i tylko jezeli liczby sa roznej dlugosci
-cmp $0,%esi
-jl sprawdz_nadmiar
+dodawaj_do_liczba2:
+cmp $0,%esi #sprawdzam czy o obie liczby sie nie skonczyly
+jl sprawdz_nadmiar #jesli tak to przechodze do finalnwego sprawdzenia nadmiaru
 movl liczba2(,%esi, 4), %eax #wpisanie do rejestru eax wycietej liczby z liczba1 o dlugosci 4 o okrelsonym indeksie
 popf #sciagam ze stosu flagi
-adcl $0,%eax #dodaje z przeniesieniem zero do eax, dzieki temu uwzgledniam ew przeniesienie wygenerowane we wczesniejszym dodawaniu przesunietej krotszej do dluzszej
+adcl $0,%eax #dodaje z przeniesieniem zero do eax
 push %eax #wkladam wynik dodawania na stos
 dec %esi #zmniejszam licznik petli
 pushf #odkladam na stos flagi
